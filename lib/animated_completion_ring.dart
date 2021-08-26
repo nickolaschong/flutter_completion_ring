@@ -38,14 +38,52 @@ class _AnimatedCompletionRingState extends State<AnimatedCompletionRing>
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return GestureDetector(
+      onTapDown: _onTapDown,
+      onTapUp: _onTapUp,
+      child: AnimatedBuilder(
+        animation: _curveAnimation,
+        builder: (BuildContext context, Widget? child) {
+          return Stack(
+            children: [
+              CompletionRing(value: _curveAnimation.value),
+              const Positioned.fill(
+                child: FractionallySizedBox(
+                  widthFactor: 0.5,
+                  child: FittedBox(
+                    child: Icon(Icons.android),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  void _onTapDown(TapDownDetails details) {
+    if (!_animationController.isCompleted) {
+      _animationController.forward();
+    } else {
+      _animationController.value = 0;
+    }
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    if (!_animationController.isCompleted) {
+      _animationController.reverse();
+    }
   }
 }
 
 class CompletionRing extends StatelessWidget {
   const CompletionRing({
     Key? key,
+    required this.value,
   }) : super(key: key);
+
+  final double value;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +93,7 @@ class CompletionRing extends StatelessWidget {
         painter: RingPainter(
           baseColor: Colors.grey,
           fillColor: Colors.pink,
-          value: 0.1,
+          value: value,
         ),
       ),
     );
@@ -74,7 +112,6 @@ class RingPainter extends CustomPainter {
 
   final Color baseColor;
   final Color fillColor;
-
   final double value;
 
   @override

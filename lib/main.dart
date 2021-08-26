@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
       body: const Center(
         child: FractionallySizedBox(
           heightFactor: 0.4,
-          child: CompletionRing(),
+          child: AnimatedCompletionRing(),
         ),
       ),
     );
