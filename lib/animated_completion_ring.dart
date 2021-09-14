@@ -40,7 +40,8 @@ class _AnimatedCompletionRingState extends State<AnimatedCompletionRing>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: _onTapDown,
-      onTapUp: _onTapUp,
+      onTapUp: (_) => _onTapUp,
+      onTapCancel: _onTapUp,
       child: AnimatedBuilder(
         animation: _curveAnimation,
         builder: (BuildContext context, Widget? child) {
@@ -70,7 +71,7 @@ class _AnimatedCompletionRingState extends State<AnimatedCompletionRing>
     }
   }
 
-  void _onTapUp(TapUpDetails details) {
+  void _onTapUp() {
     if (!_animationController.isCompleted) {
       _animationController.reverse();
     }
